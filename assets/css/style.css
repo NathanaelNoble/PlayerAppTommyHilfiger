@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "Aileron-Light";
+    src: url("/files/fonts/Aileron-Light.woff") format("woff")
+}
+
+@font-face {
+    font-family: "Aileron-Bold";
+    src: url("/files/fonts/Aileron-Bold.woff") format("woff")
+}
+
+
+main{
+    background: red; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#e31937, #00285d); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#e31937, #00285d); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#e31937, #00285d); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#e31937, #00285d); /* Standard syntax */
+    color: white;
+    font-family:"Aileron-Light", Arial, SansSerif;
+}
