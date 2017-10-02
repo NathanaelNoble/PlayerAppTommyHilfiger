@@ -16,5 +16,82 @@ main{
     background: -moz-linear-gradient(#e31937, #00285d); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#e31937, #00285d); /* Standard syntax */
     color: white;
-    font-family:"Aileron-Light", Arial, SansSerif;
+    font-family: "Aileron-Light", Arial, SansSerif;
+    width: 100%;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.block-padding{
+    width: 100%;
+    padding: 10px 30px;
+}
+
+header{
+    height: 80px;
+    display: flex;
+    right: 0;
+    justify-content: flex-end;
+}
+
+header .logo-app{
+    height: 100%;
+}
+
+#vue{
+
+}
+
+#vue .cover{
+    position: relative;
+    background-image: url("../../files/img/design/kaleidoscope-cover.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 84vw;
+    height: 84vw;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 12px;
+    -webkit-box-shadow: 12px 18px 30px -9px rgba(22,22,22,0.6);
+    -moz-box-shadow: 12px 18px 30px -9px rgba(22,22,22,0.6);
+    box-shadow: 12px 18px 30px -9px rgba(22,22,22,0.6);
+}
+
+#vue .cover img{
+    height: 40px;
+}
+
+#vue .title{
+    margin-top: 30px;
+    overflow-x: hidden;
+}
+
+#vue .title .music-name{
+    width: 450px;
+}
+
+#vue .title .artist-name{
+    margin: 20px 0;
+}
+
+h2{
+    font-size: 2rem;
+    font-family: "Aileron-Bold";
+}
+
+h3{
+    font-size: 1.2rem;
+    font-family: "Aileron-Light";
+    font-weight: normal;
+}
+
+#player{
+
+}
+
+#player img{
+    width: 100px;
 }
