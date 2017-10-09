@@ -112,7 +112,7 @@ function drawFreq(){
     ctx.moveTo(0, canvas.height/2);
     ctx.strokeStyle = 'rgb(250,250,250)';
     ctx.fillStyle = 'rgba(250,250,250,0.5)';
-    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 + averageA,(canvas.width/4)*3, canvas.height/2 - averageB, canvas.width, canvas.height/2);
+    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 - averageB,(canvas.width/4)*3, canvas.height/2 + averageA, canvas.width, canvas.height/2);
     ctx.lineTo(0, canvas.height/2);
     ctx.fill();
 
@@ -120,13 +120,13 @@ function drawFreq(){
     
     ctx.moveTo(0, canvas.height/2);
     ctx.fillStyle = 'rgba(250,250,250,0.5)';
-    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 + (averageA*0.7),(canvas.width/4)*3, canvas.height/2 - (averageB*0.7), canvas.width, canvas.height/2);
+    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 - (averageB*0.7),(canvas.width/4)*3, canvas.height/2 + (averageA*0.7), canvas.width, canvas.height/2);
     ctx.lineTo(0, canvas.height/2);
     ctx.fill();
 
     ctx.beginPath();
     ctx.lineWidth = 5;
-    ctx.strokeStyle = 'rgb(250,0,0)';
+    ctx.strokeStyle = 'rgb(227,25,55)';
     ctx.moveTo(0, canvas.height/2);
     ctx.lineTo(curseurPosition, canvas.height/2);
     ctx.stroke();
