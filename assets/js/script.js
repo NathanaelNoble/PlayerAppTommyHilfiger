@@ -59,7 +59,6 @@ function drawFreq(){
     document.querySelector('.timer').innerHTML = getMinutes(audioEle.currentTime) + ':' + getSecondes(audioEle.currentTime) + ' | ' + getMinutes(audioEle.duration) + ':' + getSecondes(audioEle.duration);    
     
     var curseurPosition = audioEle.currentTime * canvas.width / audioEle.duration;
-    console.log(curseurPosition);
     // AnalyserNode.getByteFrequencyData() pour récupérer les 'frequency data'
     // On places ces data dans notre tableau dataArray
     analyser.getByteFrequencyData(dataArray);
