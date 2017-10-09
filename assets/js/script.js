@@ -40,14 +40,14 @@ var bufferLength = analyser.frequencyBinCount;
   //canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
 function getMinutes(nb) {
-    if ( parseInt(nb / 60) > 10 ) {
+    if ( parseInt(nb / 60) >= 10 ) {
     return parseInt(nb / 60)
     } else {
         return '0' + parseInt(nb / 60)
     }
 }
 function getSecondes(nb) {
-    if ( parseInt(nb % 60) > 10 ) {
+    if ( parseInt(nb % 60) >= 10 ) {
         return parseInt(nb % 60)
     } else {
         return '0' + parseInt(nb % 60)
@@ -58,6 +58,8 @@ function drawFreq(){
     var drawVisual = requestAnimationFrame(drawFreq);
     document.querySelector('.timer').innerHTML = getMinutes(audioEle.currentTime) + ':' + getSecondes(audioEle.currentTime) + ' | ' + getMinutes(audioEle.duration) + ':' + getSecondes(audioEle.duration);    
     
+    var curseurPosition = audioEle.currentTime * canvas.width / audioEle.duration;
+    console.log(curseurPosition);
     // AnalyserNode.getByteFrequencyData() pour récupérer les 'frequency data'
     // On places ces data dans notre tableau dataArray
     analyser.getByteFrequencyData(dataArray);
@@ -69,81 +71,89 @@ function drawFreq(){
 
     for(var i = 0; i < bufferLength; i++) {
         if(i < bufferLength/4) {
-            average1 += dataArray[i];
+            // average1 += dataArray[i];
+            if (dataArray[i] > average1) average1 = dataArray[i];
         } else if (i < (bufferLength/4)*2) {
-            average2 += dataArray[i];
+            // average2 += dataArray[i];
+            if (dataArray[i] > average2) average2 = dataArray[i];
         } else if (i < (bufferLength/4)*3) {
-            average3 += dataArray[i];
+            // average3 += dataArray[i];
+            if (dataArray[i] > average3) average3 = dataArray[i];
         } else {
-            average4 += dataArray[i];
+            // average4 += dataArray[i];
+            if (dataArray[i] > average4) average4= dataArray[i];
         }
     }
     
-    average1 = ((average1 / (bufferLength / 4)) * (canvas.height/2 - 10)) / 255;
-    average2 = ((average2 / (bufferLength / 4)) * (canvas.height/2 - 10)) / 255;
-    average3 = ((average3 / (bufferLength / 4)) * (canvas.height/2 - 10)) / 255;
-    average4 = ((average4 / (bufferLength / 4)) * (canvas.height/2 - 10)) / 255;
+    average1 = ((average1 /* / (bufferLength / 4) */) * (canvas.height/2 - 10)) / 255;
+    average2 = ((average2 /* / (bufferLength / 4) */) * (canvas.height/2 - 10)) / 255;
+    average3 = ((average3 /* / (bufferLength / 4) */) * (canvas.height/2 - 10)) / 255;
+    average4 = ((average4 /* / (bufferLength / 4) */) * (canvas.height/2 - 10)) / 255;
 
-    console.log(average1, average2, average3, average4);
+    averageA = (average1 > average2) ? average1 : average2;
+    averageB = (average3 > average4) ? average3 : average4;
 
-    averageA = (average1 + average2) / 2
-    averageB = (average3 + average4) / 2
-
-    //Dessiner un rectangle noir sur notre canvas
+    // On clear le canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    ctx.lineWidth = 3;
+    // Epaisseur du trait du visualizeur
+    ctx.lineWidth = 1;
     
     // ctx.strokeStyle = 'rgb(41, 171, 226)';
     
     ctx.save();
-    ctx.beginPath();
+    
     ctx.translate(0, canvas.height);
     ctx.scale(1,-1);
+    // Et on dessine
+    ctx.beginPath();
     
-    /* var barWidth = canvas.width / bufferLength;
-    var barHeight;
-    var x = 0;
-    var cpx;
-    
-    
-        // Data de 0 à 255
-        barHeight = (dataArray[i + 1] * (canvas.height - 10)) / 255;
-        cpBarHeight = (dataArray[i] * (canvas.height - 10)) / 255;
-        cpx = x + barWidth;
-        
-        ctx.strokeStyle = 'rgb(' + barHeight + ','+(255-barHeight)+',50)';
-        ctx.fillStyle = 'rgb(' + barHeight + ','+(255-barHeight)+',50)';
-        
-        // ctx.fillRect(x,0,barWidth,barHeight);
-        // ctx.lineTo(x, barHeight);
-        ctx.quadraticCurveTo(x, cpBarHeight, cpx, barHeight);
-        x += barWidth * 2; */
 
-    /* ctx.moveTo(0, canvas.height/2);
-
-    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 + average1,(canvas.width/4)*3, canvas.height/2 - average4, canvas.width, canvas.height/2);
-    
-    //    ctx.quadraticCurveTo((canvas.width/4)*3, 0, canvas.width, 0);
-    
-    // ctx.lineTo(canvas.width, 0);
+    ctx.moveTo(0, canvas.height/2);
+    ctx.strokeStyle = 'rgb(250,250,250)';
+    ctx.fillStyle = 'rgba(250,250,250,0.5)';
+    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 + averageA,(canvas.width/4)*3, canvas.height/2 - averageB, canvas.width, canvas.height/2);
     ctx.lineTo(0, canvas.height/2);
     ctx.fill();
+
+    ctx.beginPath();
     
-    ctx.beginPath(); */
-    ctx.moveTo(0,canvas.height/2);
-    ctx.strokeStyle = 'rgb(250,250,250)';
-    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 + averageA,(canvas.width/4)*3, canvas.height/2 - averageB, canvas.width, canvas.height/2);
+    ctx.moveTo(0, canvas.height/2);
+    ctx.fillStyle = 'rgba(250,250,250,0.5)';
+    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 + (averageA*0.7),(canvas.width/4)*3, canvas.height/2 - (averageB*0.7), canvas.width, canvas.height/2);
+    ctx.lineTo(0, canvas.height/2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'rgb(250,0,0)';
+    ctx.moveTo(0, canvas.height/2);
+    ctx.lineTo(curseurPosition, canvas.height/2);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(canvas.width, canvas.height/2);
-    // ctx.
-    ctx.strokeStyle = 'rgba(250,250,250, 0.3)';
-    ctx.lineTo(0, canvas.height/2);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = 'rgb(250,250,250)';
+    ctx.moveTo(curseurPosition, canvas.height/2);
+    ctx.lineTo(canvas.width, canvas.height/2);
     ctx.stroke();
 
+    ctx.beginPath();
+    ctx.fillStyle = 'rgb(230,230,230)';
+    ctx.moveTo(curseurPosition, canvas.height/2);
+    ctx.arc(curseurPosition, canvas.height/2, 10, 0, 2 * Math.PI, false);
+    ctx.fill();
+
+
     ctx.restore();
+    
+
+    /* ctx.beginPath();
+    ctx.moveTo(canvas.width, canvas.height/2);
+    ctx.strokeStyle = 'rgba(250,250,250, 0.3)';
+    ctx.lineTo(0, canvas.height/2);
+    ctx.stroke(); */
+
 };
 
 drawFreq();
