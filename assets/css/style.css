@@ -54,11 +54,16 @@ header .logo-app{
     -webkit-box-shadow: 12px 18px 30px -9px rgba(22,22,22,0.6);
     -moz-box-shadow: 12px 18px 30px -9px rgba(22,22,22,0.6);
     box-shadow: 12px 18px 30px -9px rgba(22,22,22,0.6);
+    transition: transform ease-in-out 0.6s;
 }
 
 #vue .cover img{
     height: 40px;
     cursor: pointer;
+}
+
+#vue .cover.triggered{
+    transform: scale(0.9);
 }
 
 #vue .title{
@@ -68,7 +73,7 @@ header .logo-app{
 
 @keyframes defilement {
     0% {margin-left:0;}
-    50% {margin-left: -20%;}
+    50% {margin-left: -30%;}
     100% {margin-left: 0;}
 }
 
@@ -76,7 +81,7 @@ header .logo-app{
     width: 450px;
     font-size: 2rem;
     font-family: "Aileron-Bold";
-    animation: alternate defilement 7s infinite ;
+    animation: ease-in-out defilement 10s infinite;
 }
 
 #vue .title .artist-name{
@@ -130,4 +135,16 @@ header .logo-app{
 
 #player .controler--small{
     width: 30px;
+}
+
+.button{
+    transition: transform 0.2s ease-in-out;
+}
+
+.button.handeled{
+    transform: scale(0.8);
+}
+
+.button#repeat-btn{
+    transition: transform 0.6s ease-in-out;
 }
