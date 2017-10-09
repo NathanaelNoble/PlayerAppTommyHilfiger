@@ -5,7 +5,7 @@ var audioEle = document.querySelector('audio');
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 canvas.width = 400;
-canvas.height = 150;
+canvas.height = 300;
 
 // L'API web audio permet d'extraire une série de données de la source audio
 // Fréquence, forme d'onde...
@@ -29,7 +29,7 @@ analyser.connect(audioCtx.destination);
  // L'analyseur va alors capturer les données audio en usant 
  // une Transformation de Fourier Rapide (fft) à une certaine fréquence
   // Par défaut analyser.fftSize=2048 (puissance de 2);
- analyser.fftSize = 128;
+ analyser.fftSize = 64;
  // Nombre de points de données qui seront collectées pour cette fréquence
  // analyser.fftSize/2
 var bufferLength = analyser.frequencyBinCount;
@@ -53,48 +53,96 @@ function getSecondes(nb) {
         return '0' + parseInt(nb % 60)
     }
 }
-  
-function drawFreq(){
-    drawVisual = requestAnimationFrame(drawFreq);
-    document.querySelector('.timer').innerHTML = getMinutes(audioEle.currentTime) + ':' + getSecondes(audioEle.currentTime) + ' | ' + getMinutes(audioEle.duration) + ':' + getSecondes(audioEle.duration);    
 
+function drawFreq(){
+    var drawVisual = requestAnimationFrame(drawFreq);
+    document.querySelector('.timer').innerHTML = getMinutes(audioEle.currentTime) + ':' + getSecondes(audioEle.currentTime) + ' | ' + getMinutes(audioEle.duration) + ':' + getSecondes(audioEle.duration);    
+    
     // AnalyserNode.getByteFrequencyData() pour récupérer les 'frequency data'
     // On places ces data dans notre tableau dataArray
     analyser.getByteFrequencyData(dataArray);
+    
+    var average1 = 0;
+    var average2 = 0;
+    var average3 = 0;
+    var average4 = 0;
+
+    for(var i = 0; i < bufferLength; i++) {
+        if(i < bufferLength/4) {
+            average1 += dataArray[i];
+        } else if (i < (bufferLength/4)*2) {
+            average2 += dataArray[i];
+        } else if (i < (bufferLength/4)*3) {
+            average3 += dataArray[i];
+        } else {
+            average4 += dataArray[i];
+        }
+    }
+    
+    average1 = ((average1 / (bufferLength / 4)) * (canvas.height/2 - 10)) / 255;
+    average2 = ((average2 / (bufferLength / 4)) * (canvas.height/2 - 10)) / 255;
+    average3 = ((average3 / (bufferLength / 4)) * (canvas.height/2 - 10)) / 255;
+    average4 = ((average4 / (bufferLength / 4)) * (canvas.height/2 - 10)) / 255;
+
+    console.log(average1, average2, average3, average4);
+
+    averageA = (average1 + average2) / 2
+    averageB = (average3 + average4) / 2
 
     //Dessiner un rectangle noir sur notre canvas
-    ctx.fillStyle = 'rgb(50,50,50)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.lineWidth = 5;
+    
+    ctx.lineWidth = 3;
     
     // ctx.strokeStyle = 'rgb(41, 171, 226)';
     
     ctx.save();
+    ctx.beginPath();
     ctx.translate(0, canvas.height);
     ctx.scale(1,-1);
     
-    //largeur de chaque barre
-    var barWidth = (canvas.width / bufferLength)-1;
+    /* var barWidth = canvas.width / bufferLength;
     var barHeight;
     var x = 0;
+    var cpx;
+    
+    
+        // Data de 0 à 255
+        barHeight = (dataArray[i + 1] * (canvas.height - 10)) / 255;
+        cpBarHeight = (dataArray[i] * (canvas.height - 10)) / 255;
+        cpx = x + barWidth;
+        
+        ctx.strokeStyle = 'rgb(' + barHeight + ','+(255-barHeight)+',50)';
+        ctx.fillStyle = 'rgb(' + barHeight + ','+(255-barHeight)+',50)';
+        
+        // ctx.fillRect(x,0,barWidth,barHeight);
+        // ctx.lineTo(x, barHeight);
+        ctx.quadraticCurveTo(x, cpBarHeight, cpx, barHeight);
+        x += barWidth * 2; */
 
-    for(var i = 0; i < bufferLength; i++) {
-          // Data de 0 à 255
-          barHeight = dataArray[i];
+    /* ctx.moveTo(0, canvas.height/2);
 
-          ctx.strokeStyle = 'rgb(' + barHeight + ','+(255-barHeight)+',50)';
-          ctx.fillStyle = 'rgb(' + barHeight + ','+(255-barHeight)+',50)';
-  
-          // ctx.fillRect(x,0,barWidth,barHeight);
-          ctx.lineTo(x, barHeight);
-          x += barWidth + 1;
-    }
-    ctx.lineTo(canvas.width, 0);
-    ctx.lineTo(0, 0);
-    ctx.stroke();
+    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 + average1,(canvas.width/4)*3, canvas.height/2 - average4, canvas.width, canvas.height/2);
+    
+    //    ctx.quadraticCurveTo((canvas.width/4)*3, 0, canvas.width, 0);
+    
+    // ctx.lineTo(canvas.width, 0);
+    ctx.lineTo(0, canvas.height/2);
     ctx.fill();
+    
+    ctx.beginPath(); */
+    ctx.moveTo(0,canvas.height/2);
+    ctx.strokeStyle = 'rgb(250,250,250)';
+    ctx.bezierCurveTo(canvas.width/4, canvas.height/2 + averageA,(canvas.width/4)*3, canvas.height/2 - averageB, canvas.width, canvas.height/2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(canvas.width, canvas.height/2);
+    // ctx.
+    ctx.strokeStyle = 'rgba(250,250,250, 0.3)';
+    ctx.lineTo(0, canvas.height/2);
+    ctx.stroke();
+
     ctx.restore();
 };
 
