@@ -59,7 +59,6 @@ function drawFreq(){
     document.querySelector('.timer').innerHTML = getMinutes(audioEle.currentTime) + ':' + getSecondes(audioEle.currentTime) + ' | ' + getMinutes(audioEle.duration) + ':' + getSecondes(audioEle.duration);    
     
     var curseurPosition = audioEle.currentTime * canvas.width / audioEle.duration;
-    console.log(curseurPosition);
     // AnalyserNode.getByteFrequencyData() pour récupérer les 'frequency data'
     // On places ces data dans notre tableau dataArray
     analyser.getByteFrequencyData(dataArray);
@@ -184,10 +183,12 @@ playButton.addEventListener("click", function(){
         this.src = "files/img/icons/pause.svg";
         document.cover.classList.toggle("triggered");
         document.isPlaying = true;
+        audioEle.play();        
     }else{
         this.src = "files/img/icons/play.svg";
         document.cover.classList.toggle("triggered");
         document.isPlaying = false;
+        audioEle.pause();
     }
 
 });
@@ -203,16 +204,18 @@ repeatButton.addEventListener("click", function(){
         this.style.transform = "rotate(360deg)";
         this.src = "files/img/icons/repeatfull.svg";
         document.repeat = true;
+        audioEle.loop = true;
     }else{
         this.style.transform = "rotate(0deg)";
         this.src = "files/img/icons/repeat.svg";
         document.repeat = false;
+        audioEle.loop = false;
     }
 
 });
 
 
-// Switch Playbutton
+// Switch LikeButton
 
 document.like = false;
 
