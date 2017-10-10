@@ -8,6 +8,11 @@
     src: url("../../files/fonts/Aileron-Bold.woff") format("woff")
 }
 
+body{
+    width: 100%;
+    background-color: #00285d;
+}
+
 
 main{
     background: red; /* For browsers that do not support gradients */
@@ -17,7 +22,8 @@ main{
     background: linear-gradient(#e31937, #00285d); /* Standard syntax */
     color: white;
     font-family: "Aileron-Light", Arial, SansSerif;
-    width: 100%;
+    width: 480px;
+    margin: 0 auto;
     position: relative;
     height: 100vh;
     overflow-x: hidden;
@@ -44,8 +50,8 @@ header .logo-app{
     background-image: url("../../files/img/design/kaleidoscope-cover.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    width: 84vw;
-    height: 84vw;
+    width: 24vw;
+    height: 24vw;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -137,6 +143,16 @@ header .logo-app{
     width: 30px;
 }
 
+#player .spectrum .bottom {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+#player audio{
+    display: none;
+}
+
 .button{
     transition: transform 0.2s ease-in-out;
 }
@@ -148,3 +164,4 @@ header .logo-app{
 .button#repeat-btn{
     transition: transform 0.6s ease-in-out;
 }
+

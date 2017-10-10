@@ -5,7 +5,7 @@ var audioEle = document.querySelector('audio');
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 canvas.width = 400;
-canvas.height = 300;
+canvas.height = 100;
 
 // L'API web audio permet d'extraire une série de données de la source audio
 // Fréquence, forme d'onde...
@@ -91,6 +91,8 @@ function drawFreq(){
 
     averageA = (average1 > average2) ? average1 : average2;
     averageB = (average3 > average4) ? average3 : average4;
+    averageA = averageA*2.3;
+    averageB = averageB*2.3;
 
     // On clear le canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
