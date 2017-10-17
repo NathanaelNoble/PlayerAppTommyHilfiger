@@ -232,3 +232,15 @@ likeButton.addEventListener("click", function(){
     }
 
 });
+
+// Next and Prev button
+
+var prevButton = document.getElementById("btnPrev");
+var nextButton = document.getElementById("btnNext");
+
+prevButton.addEventListener('click', function() {
+    audioEle.currentTime = 0;
+}, false)
+nextButton.addEventListener('click', function() {
+    audioEle.currentTime = 0;
+}, false)
